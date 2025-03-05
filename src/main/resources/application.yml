@@ -9,41 +9,41 @@ spring:
     gateway:
       routes:
         - id: auth-service
-          uri: http://auth-service-production-c807.up.railway.app
+          uri: https://auth-service-production-c807.up.railway.app
           predicates:
             - Path=/auth/**
 
         - id: user-service
-          uri: http://user-service-production-9d8d.up.railway.app
+          uri: https://user-service-production-9d8d.up.railway.app
           predicates:
             - Path=/users/**
 
         - id: order-service
-          uri: http://order-service-production.up.railway.app
+          uri: https://order-service-production.up.railway.app
           predicates:
             - Path=/orders/**
 
         - id: product-service
-          uri: http://product-service-production-3da2.up.railway.app
+          uri: https://product-service-production-3da2.up.railway.app
           predicates:
             - Path=/products/**
 
         - id: cart-service
-          uri: http://cart-service-master-production.up.railway.app
+          uri: https://cart-service-master-production.up.railway.app
           predicates:
             - Path=/cart/**
 
         - id: category-service
-          uri: http://category-service-master-production.up.railway.app
+          uri: https://category-service-master-production.up.railway.app
           predicates:
             - Path=/categories/**
 
         - id: notification-service
-          uri: http://notification-service-master-production.up.railway.app
+          uri: https://notification-service-master-production.up.railway.app
           predicates:
             - Path=/notifications/**
 
         - id: service-registry
-          uri: http://service-registry-master-production.up.railway.app
+          uri: https://service-registry-master-production.up.railway.app
           predicates:
             - Path=/registry/**
