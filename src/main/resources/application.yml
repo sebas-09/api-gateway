@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 0 # Permitir que Railway asigne un puerto dinámico
 
 spring:
   application:
@@ -7,13 +7,17 @@ spring:
 
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true # Habilita descubrimiento automático en Eureka
+          lower-case-service-id: true # Asegura que los nombres de los servicios sean en minúsculas
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
       globalcors:
         cors-configurations:
           "[/**]":
             allowedOrigins:
-              - "https://frontend-eight-liard-29.vercel.app"
+              - "https://frontend-eight-liard-29.vercel.app" # Dominio del frontend en Vercel
             allowedMethods:
               - GET
               - POST
@@ -25,41 +29,50 @@ spring:
             allowCredentials: true
       routes:
         - id: auth-service
-          uri: https://auth-service-production-a7ca.up.railway.app
+          uri: lb://auth-service
           predicates:
             - Path=/auth/**
 
         - id: user-service
-          uri: https://user-service-production-9d8d.up.railway.app
+          uri: lb://user-service
           predicates:
             - Path=/users/**
 
         - id: order-service
-          uri: https://order-service-production.up.railway.app
+          uri: lb://order-service
           predicates:
             - Path=/orders/**
 
         - id: product-service
-          uri: https://product-service-production-33ba.up.railway.app
+          uri: lb://product-service
           predicates:
             - Path=/products/**
 
         - id: cart-service
-          uri: https://cart-service-master-production.up.railway.app
+          uri: lb://cart-service
           predicates:
             - Path=/cart/**
 
         - id: category-service
-          uri: https://category-service-production.up.railway.app
+          uri: lb://category-service
           predicates:
             - Path=/categories/**
 
         - id: notification-service
-          uri: https://notification-service-master-production.up.railway.app
+          uri: lb://notification-service
           predicates:
             - Path=/notifications/**
 
         - id: service-registry
-          uri: https://service-registry-master-production.up.railway.app
+          uri: lb://service-registry
           predicates:
             - Path=/registry/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: https://service-registry-production-8dd6.up.railway.app/eureka/
+    register-with-eureka: true # Permitir que API Gateway se registre en Eureka
+    fetch-registry: true # Obtener la lista de servicios desde Eureka
+  instance:
+    prefer-ip-address: true # Usar la IP en lugar del hostname para evitar problemas de DNS
