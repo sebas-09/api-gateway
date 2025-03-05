@@ -4,74 +4,46 @@ server:
 spring:
   application:
     name: api-gateway
+
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
       routes:
         - id: auth-service
-          uri: lb://AUTH-SERVICE
+          uri: http://auth-service-production-c807.up.railway.app
           predicates:
-            - Path=/auth-service/**
-          filters:
-            - StripPrefix=1
-
-        - id: notification-service
-          uri: lb://NOTIFICATION-SERVICE
-          predicates:
-            - Path=/notification-service/**
-          filters:
-            - StripPrefix=1
-
-        - id: category-service
-          uri: lb://CATEGORY-SERVICE
-          predicates:
-            - Path=/category-service/**
-          filters:
-            - StripPrefix=1
-
-        - id: product-service
-          uri: lb://PRODUCT-SERVICE
-          predicates:
-            - Path=/product-service/**
-          filters:
-            - StripPrefix=1
+            - Path=/auth/**
 
         - id: user-service
-          uri: lb://USER-SERVICE
+          uri: http://user-service-production-9d8d.up.railway.app
           predicates:
-            - Path=/user-service/**
-          filters:
-            - StripPrefix=1
-
-        - id: cart-service
-          uri: lb://CART-SERVICE
-          predicates:
-            - Path=/cart-service/**
-          filters:
-            - StripPrefix=1
+            - Path=/users/**
 
         - id: order-service
-          uri: lb://ORDER-SERVICE
+          uri: http://order-service-production.up.railway.app
           predicates:
-            - Path=/order-service/**
-          filters:
-            - StripPrefix=1
+            - Path=/orders/**
 
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: '*'
-            allowedMethods: '*'
-            allowedHeaders: '*'
+        - id: product-service
+          uri: http://product-service-production-3da2.up.railway.app
+          predicates:
+            - Path=/products/**
 
+        - id: cart-service
+          uri: http://cart-service-master-production.up.railway.app
+          predicates:
+            - Path=/cart/**
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-  instance:
-    hostname: localhost
+        - id: category-service
+          uri: http://category-service-master-production.up.railway.app
+          predicates:
+            - Path=/categories/**
+
+        - id: notification-service
+          uri: http://notification-service-master-production.up.railway.app
+          predicates:
+            - Path=/notifications/**
+
+        - id: service-registry
+          uri: http://service-registry-master-production.up.railway.app
+          predicates:
+            - Path=/registry/**
